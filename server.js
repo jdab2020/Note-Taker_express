@@ -56,19 +56,37 @@ const saveToDB = (note) => {
 }
 
 // Deleting notes
+// app.delete("/api/notes/:id", function (req,res){
+//     var chosenId = req.params.id;
+//     // console.log(chosenId,"req.params.id");
+//     for (let i = 0; i < savedNotes.length; i++) {
+//         if (chosenId === savedNotes[i].id) {
+//             // console.log("selection for deleting",savedNotes);
+//             savedNotes.splice(i,1);
+//             // console.log("after deletion",savedNotes);
+//             saveToDB(savedNotes);
+//             res.json(savedNotes);
+//         }
+//     }    
+// })
+
+// Deleting notes and updating index
 app.delete("/api/notes/:id", function (req,res){
-    var chosenId = req.params.id;
-    // console.log(chosenId,"req.params.id");
-    for (let i = 0; i < savedNotes.length; i++) {
-        if (chosenId === savedNotes[i].id) {
-            // console.log("selection for deleting",savedNotes);
-            savedNotes.splice(i,1);
-            // console.log("after deletion",savedNotes);
-            saveToDB(savedNotes);
-            res.json(savedNotes);
+        var chosenId = req.params.id;
+        // console.log(chosenId,"req.params.id");
+        for (let i = 0; i < savedNotes.length; i++) {
+            if (chosenId === savedNotes[i].id) {
+                // console.log("selection for deleting",savedNotes);
+                savedNotes.splice(i,1);
+                // console.log("after deletion",savedNotes);
+            }
+        }    
+        for (let i = 0; i < savedNotes.length; i++){
+            savedNotes[i].id = `${i}`;
         }
-    }    
-})
+        saveToDB(savedNotes);
+        res.json(savedNotes);
+    })
 
 // Starts the server to begin listening
 // =============================================================

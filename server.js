@@ -28,24 +28,29 @@ app.get("/notes", function (req, res) {
 
 // Display all notes
 app.get("/api/notes", function(req,res){
+    // console.log("displaying",savedNotes);
     res.json(savedNotes);
 });
 
 // Posting new notes
 app.post("/api/notes", function(req,res){
     let newNote = req.body;
+    // console.log("newNote",newNote);
     // Give an id for deleting
     let id = savedNotes.length;
-    newNote.id = id;
-    console.log(newNote);
-    newNote = JSON.stringify(newNote);
-    saveToDB(newNote);
-    res.json(newNote);
+    console.log(id,"id");
+    newNote.id = `${id}`;
+    // console.log(newNote,"typed new notes");
+    savedNotes.push(newNote);
+    // console.log(savedNotes,"pushing");
+    saveToDB(savedNotes);
+    res.json(savedNotes);
 });
 
 // Saving into database
 const saveToDB = (note) => {
     fs.writeFileSync("./db/db.json",note, (err) => {
+        // console.log("saving now");
         if (err) return console.log(err);
     })
 }
@@ -53,13 +58,12 @@ const saveToDB = (note) => {
 // Deleting notes
 app.delete("/api/notes/:id", function (req,res){
     var chosenId = req.params.id;
-    console.log(chosenId,"req.params.id");
-
+    // console.log(chosenId,"req.params.id");
     for (let i = 0; i < savedNotes.length; i++) {
         if (chosenId === savedNotes[i].id) {
-            console.log("selection for deleting",savedNotes);
+            // console.log("selection for deleting",savedNotes);
             savedNotes.splice(i,1);
-            console.log("after deletion",savedNotes);
+            // console.log("after deletion",savedNotes);
             saveToDB(JSON.stringify(savedNotes));
             res.json(savedNotes);
         }

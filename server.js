@@ -4,11 +4,14 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const savedNotes = require("./db/db.json");
+const PORT = process.env.PORT || 3000;
+// const htmlRoutes = require ("./routes/htmlRoutes");
+// const apiRoutes = require ("./routes/apiRoutes");
 
 // Sets up the Express App
 // =============================================================
 const app = express();
-const PORT = 3000;
+// const PORT = 3000;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));

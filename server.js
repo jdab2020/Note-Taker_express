@@ -49,7 +49,7 @@ app.post("/api/notes", function(req,res){
 
 // Saving into database
 const saveToDB = (note) => {
-    fs.writeFileSync("./db/db.json",note, (err) => {
+    fs.writeFileSync("./db/db.json",JSON.stringify(note), (err) => {
         // console.log("saving now");
         if (err) return console.log(err);
     })
@@ -64,7 +64,7 @@ app.delete("/api/notes/:id", function (req,res){
             // console.log("selection for deleting",savedNotes);
             savedNotes.splice(i,1);
             // console.log("after deletion",savedNotes);
-            saveToDB(JSON.stringify(savedNotes));
+            saveToDB(savedNotes);
             res.json(savedNotes);
         }
     }    

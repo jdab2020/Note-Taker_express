@@ -16,6 +16,7 @@ app.use(express.json());
 
 // Routes
 // =============================================================
+app.use(express.static("public"));
 
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "../public/index.html"));
@@ -37,6 +38,7 @@ app.post("/api/notes", function(req,res){
     let id = savedNotes.length;
     newNote.id = id;
     console.log(newNote);
+    newNote = JSON.stringify(newNote);
     saveToDB(newNote);
     res.json(newNote);
 });
@@ -49,7 +51,20 @@ const saveToDB = (note) => {
 }
 
 // Deleting notes
+app.delete("/api/notes/:id", function (req,res){
+    var chosenId = req.params.id;
+    console.log(chosenId,"req.params.id");
 
+    for (let i = 0; i < savedNotes.length; i++) {
+        if (chosenId === savedNotes[i].id) {
+            console.log("selection for deleting",savedNotes);
+            savedNotes.splice(i,1);
+            console.log("after deletion",savedNotes);
+            saveToDB(JSON.stringify(savedNotes));
+            res.json(savedNotes);
+        }
+    }    
+})
 
 // Starts the server to begin listening
 // =============================================================
